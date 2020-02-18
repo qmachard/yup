@@ -44,6 +44,7 @@ export let number = {
   positive: '${path} must be a positive number',
   negative: '${path} must be a negative number',
   integer: '${path} must be an integer',
+  decimals: '${path} must have maximum ${decimals} decimals after the comma',
 };
 
 export let date = {

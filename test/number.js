@@ -215,6 +215,22 @@ describe('Number types', function() {
     });
   });
 
+  describe('decimals', () => {
+    var schema = number().decimals(2);
+
+    TestHelpers.validateAll(schema, {
+      valid: [6, 56445435, 6.32, 6.3, [null, schema.nullable()]],
+      invalid: [3.123, null],
+    });
+
+    it('should return default message', () => {
+      return schema
+        .validate(3.123)
+        .should.be.rejected.and.eventually.have.property('errors')
+        .that.contain('this must have maximum 2 decimals after the comma');
+    });
+  });
+
   it('should check POSITIVE correctly', function() {
     var v = number().positive();
 

@@ -5,6 +5,11 @@ import isAbsent from './util/isAbsent';
 
 let isNaN = value => value != +value;
 
+const countDecimals = value => {
+  if (Math.floor(value.valueOf()) === value.valueOf()) return 0;
+  return value.toString().split('.')[1].length || 0;
+};
+
 export default function NumberSchema() {
   if (!(this instanceof NumberSchema)) return new NumberSchema();
 
@@ -118,5 +123,17 @@ inherits(NumberSchema, MixedSchema, {
     return this.transform(
       value => (!isAbsent(value) ? Math[method](value) : value),
     );
+  },
+
+  decimals(decimals, message = locale.decimals) {
+    return this.test({
+      message,
+      name: 'decimals',
+      exclusive: true,
+      params: { decimals },
+      test(value) {
+        return isAbsent(value) || countDecimals(value) <= decimals;
+      },
+    });
   },
 });
